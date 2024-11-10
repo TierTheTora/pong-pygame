@@ -53,6 +53,39 @@ def resource_path(relative_path):
 
     return os.path.join(base_path, relative_path)
 
+# Functions
+def pause():
+    global paused, start
+    paused = True
+
+    if not start:
+        while paused:
+
+            KEY: pygame.key.ScancodeWrapper = pygame.key.get_pressed()
+            text_pause: pygame.Surface = FONT.render("PAUSED", True, WHITE)
+            text_rect: pygame.Rect = text_pause.get_rect()
+            text_rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
+
+            text_info: pygame.Surface = START.render("PRESS 'P' TO CONTINUE", True, WHITE)
+            info_rect: pygame.Rect = text_info.get_rect()
+            info_rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + text_pause.get_height() + OFFSET)
+
+            SCREEN.blit(text_pause, text_rect)
+            SCREEN.blit(text_info, info_rect)
+
+            if KEY[pygame.K_p]:
+                paused = False
+                break
+
+            for event in pygame.event.get():
+
+                # If the window's 'x' button is pressed
+                if event.type == QUIT:
+                    paused = False
+                    pygame.quit()
+            pygame.display.update()
+
+
 # Constants
 BLUE : list[int] = (0, 0, 255)
 RED  : list[int] = (255, 0, 0)
@@ -175,6 +208,9 @@ while run:
             volume = 0.45
         else:
             volume = 0
+
+    if KEY[pygame.K_ESCAPE]:
+        pause()
 
     if ball.rect.right >= SCREEN_WIDTH:
         ball.reset()

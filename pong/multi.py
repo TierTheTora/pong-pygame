@@ -1,5 +1,5 @@
 import pygame
-from pygame.locals import QUIT
+from pygame.locals import QUIT, KEYDOWN
 import sys
 import os
 
@@ -43,6 +43,7 @@ class Ball:
         self.rect = pygame.Rect(SCREEN_WIDTH / 2, 0, self.BALL_WIDTH, self.BALL_HEIGHT)
         self.ballX = 1
         self.ballY = 1
+        
 
 def resource_path(relative_path):
     try:
@@ -104,11 +105,44 @@ text_player: pygame.Surface = FONT.render(str(score_player), True, WHITE)
 text_opp: pygame.Surface = FONT.render(str(score_opponent), True, WHITE)
 volume: float = 0.45
 ball = Ball(PLAYER_WIDTH, OFFSET, SCREEN_HEIGHT, BALL_WIDTH, BALL_HEIGHT)
+paused: bool = False
 
 # Set the window name to 'Pong'
 pygame.display.set_caption("Pong")
 pygame.display.set_icon(ICON)
 HIT.set_volume(volume)
+
+def pause():
+    global paused, start
+    paused = True
+
+    if not start:
+        while paused:
+
+            KEY: pygame.key.ScancodeWrapper = pygame.key.get_pressed()
+            text_pause: pygame.Surface = FONT.render("PAUSED", True, WHITE)
+            text_rect: pygame.Rect = text_pause.get_rect()
+            text_rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
+
+            text_info: pygame.Surface = START.render("PRESS 'P' TO CONTINUE", True, WHITE)
+            info_rect: pygame.Rect = text_info.get_rect()
+            info_rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + text_pause.get_height() + OFFSET)
+
+            SCREEN.blit(text_pause, text_rect)
+            SCREEN.blit(text_info, info_rect)
+
+            if KEY[pygame.K_p]:
+                paused = False
+                break
+
+            for event in pygame.event.get():
+
+                # If the window's 'x' button is pressed
+                if event.type == QUIT:
+                    paused = False
+                    pygame.quit()
+            pygame.display.update()
+
 
 
 # Game
@@ -163,6 +197,9 @@ while run:
             volume = 0.45
         else:
             volume = 0
+
+    if KEY[pygame.K_ESCAPE]:
+        pause()
 
     if ball.rect.right >= SCREEN_WIDTH:
         ball.reset()
