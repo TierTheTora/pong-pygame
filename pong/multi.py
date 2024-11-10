@@ -139,17 +139,17 @@ while run:
             PLAYER.move_ip(0, -1)
             if start:
                 ball.rect.move_ip(0, -1)
-    elif KEY[pygame.K_UP]:
+    if KEY[pygame.K_UP]:
         if not OPPONENT.top <= 0:
             OPPONENT.move_ip(0, -1)
     
-    elif KEY[pygame.K_s]:
+    if KEY[pygame.K_s]:
         if not PLAYER.bottom >= SCREEN_HEIGHT:
             PLAYER.move_ip(0, 1)
             if start:
                 ball.rect.move_ip(0, 1)
     
-    elif KEY[pygame.K_DOWN]:
+    if KEY[pygame.K_DOWN]:
         if not OPPONENT.bottom >= SCREEN_HEIGHT:
             OPPONENT.move_ip(0, 1)
 
