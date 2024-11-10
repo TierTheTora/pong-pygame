@@ -63,7 +63,6 @@ SCREEN: pygame.Surface = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 ICON: pygame.Surface = pygame.image.load("./pong/assets/icon/pong.png")
 
 HIT: pygame.mixer.Sound = pygame.mixer.Sound('./pong/assets/sfx/hit.wav')
-VOLUME: float = 0.45
 
 PLAYER_HEIGHT: int = 100
 PLAYER_WIDTH: int = 20
@@ -95,17 +94,17 @@ score_opponent: int = 0
 text_start: pygame.Surface = FONT.render("PRESS SPACE TO START", True, WHITE)
 text_player: pygame.Surface = FONT.render(str(score_player), True, WHITE)
 text_opp: pygame.Surface = FONT.render(str(score_opponent), True, WHITE)
-
+volume: float = 0.45
 ball = Ball(PLAYER_WIDTH, OFFSET, SCREEN_HEIGHT, BALL_WIDTH, BALL_HEIGHT)
 
 # Set the window name to 'Pong'
 pygame.display.set_caption("Pong")
 pygame.display.set_icon(ICON)
-HIT.set_volume(VOLUME)
 
 
 # Game
 while run:
+    HIT.set_volume(volume)
     if not start:
         ball.move(PLAYER, OPPONENT)
         opponent_target_y = ball.rect.y - OPPONENT.height // 2
@@ -157,11 +156,17 @@ while run:
             if start:
                 ball.rect.move_ip(0, -1)
     
-    elif KEY[pygame.K_s] or KEY[pygame.K_DOWN]:
+    if KEY[pygame.K_s] or KEY[pygame.K_DOWN]:
         if not PLAYER.bottom >= SCREEN_HEIGHT:
             PLAYER.move_ip(0, 1)
             if start:
                 ball.rect.move_ip(0, 1)
+
+    if KEY[pygame.K_m]:
+        if volume == 0:
+            volume = 0.45
+        else:
+            volume = 0
 
     if ball.rect.right >= SCREEN_WIDTH:
         ball.reset()
