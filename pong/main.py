@@ -1,6 +1,8 @@
 import pygame
 from pygame.locals import QUIT
 import random
+import sys
+import os
 
 # Initialize pygame
 pygame.init()
@@ -43,6 +45,13 @@ class Ball:
         self.ballX = 1
         self.ballY = 1
 
+def resource_path(relative_path):
+    try:
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
 
 # Constants
 BLUE : list[int] = (0, 0, 255)
@@ -60,9 +69,8 @@ SCREEN_HEIGHT: int = 600
 SCREEN_WIDTH: int = 800
 SCREEN: pygame.Surface = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
-ICON: pygame.Surface = pygame.image.load("./pong/assets/icon/pong.png")
-
-HIT: pygame.mixer.Sound = pygame.mixer.Sound('./pong/assets/sfx/hit.wav')
+ICON: pygame.Surface = pygame.image.load(resource_path("pong.png"))
+HIT: pygame.mixer.Sound = pygame.mixer.Sound(resource_path('hit.wav'))
 
 PLAYER_HEIGHT: int = 100
 PLAYER_WIDTH: int = 20
