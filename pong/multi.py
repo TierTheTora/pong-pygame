@@ -1,4 +1,9 @@
-# Bundle file command: Python -m PyInstaller --onefile --windowed --add-data "pong.png:." --add-data "hit.wav:." multi.py    
+# BUNDLE FILES:
+#
+#     cd pong
+#     Python -m PyInstaller --onefile --windowed --add-data "pong.png:." --add-data "hit.wav:." multi.py    
+#
+#
 
 try:
     import pygame
