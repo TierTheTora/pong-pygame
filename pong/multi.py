@@ -1,13 +1,13 @@
 # BUNDLE FILES:
 #
 #     cd pong
-#     Python -m PyInstaller --onefile --windowed --add-data "pong.png:." --add-data "hit.wav:." multi.py    
+#     Python -m PyInstaller --onefile --windowed --add-data "pong.png:." --add-data "hit.wav:." multi.py
 #
 #
 
 try:
     import pygame
-    from pygame.locals import QUIT, KEYDOWN
+    from pygame.locals import QUIT
     import sys
     import os
 
@@ -132,14 +132,14 @@ try:
                 text_rect: pygame.Rect = text_pause.get_rect()
                 text_rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
 
-                text_info: pygame.Surface = START.render("PRESS 'P' TO CONTINUE", True, WHITE)
+                text_info: pygame.Surface = START.render("PRESS 'ESC' TO CONTINUE", True, WHITE)
                 info_rect: pygame.Rect = text_info.get_rect()
                 info_rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + text_pause.get_height() + OFFSET)
 
                 SCREEN.blit(text_pause, text_rect)
                 SCREEN.blit(text_info, info_rect)
 
-                if KEY[pygame.K_p]:
+                if KEY[pygame.K_ESCAPE]:
                     paused = False
                     break
 
@@ -206,7 +206,7 @@ try:
             else:
                 volume = 0
 
-        if KEY[pygame.K_ESCAPE]:
+        if KEY[pygame.K_p]:
             pause()
 
         if ball.rect.right >= SCREEN_WIDTH:
